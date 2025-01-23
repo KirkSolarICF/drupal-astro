@@ -1,0 +1,44 @@
+---
+import {Jsona} from "jsona";
+import {DrupalJsonApiParams} from "drupal-jsonapi-params";
+import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
+
+import type {DrupalNode} from "../../types";
+import {getArticles} from "../../api/drupal";
+
+// Get all published articles.
+export async function getStaticPaths() {
+    const articles = await getArticles();
+
+    return articles.map((article: DrupalNode) => {
+        return {
+            params: {
+                // Choose `path` to match the `[path]` routing value
+                path: article.path.alias.split('/')[2]
+            },
+            props: {
+                title: article.title,
+                body: article.body,
+                date: new Date(article.created).toLocaleDateString('en-EN', {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })
+            }
+        }
+    });
+}
+
+const {title, date, body} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <title>{title}</title>
+  </head>
+  <body>
+    <h1>{title}</h1>
+    <time>{date}</time>
+    <article set:html={body.value} />
+  </body>
+</html>
