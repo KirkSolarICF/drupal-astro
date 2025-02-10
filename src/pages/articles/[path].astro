@@ -5,6 +5,9 @@ import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
 
 import type {DrupalNode} from "../../types";
 import {getArticles} from "../../api/drupal";
+
+import { Debug } from 'astro:components'; // DELETEME
+
 // Get the Drupal Base Url.
 export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
 // Get all published articles.
@@ -22,6 +25,8 @@ console.clear();
             },
             props: {
                 title: article.title,
+                image: baseUrl + article.field_media_image.field_media_image.uri.url,
+                imageMeta: article.field_media_image.field_media_image.resourceIdObjMeta,
                 body: article.body,
                 img: baseUrl ,
                 date: new Date(article.created).toLocaleDateString('en-EN', {
@@ -34,8 +39,7 @@ console.clear();
     });
 }
 
-const {title, date, body, img} = Astro.props;
-
+const {title, image, imageMeta, date, body} = Astro.props;
 ---
 
 <html lang="en">
@@ -45,7 +49,15 @@ const {title, date, body, img} = Astro.props;
   <body>
     <h1>{title}</h1>
     <time>{date}</time>
+    IMAGE META --><Debug imageMeta={imageMeta} />
+    <div>
+    IMAGE PATH -->{image}
+    <br>
+    IMAGE ALT -->{imageMeta.alt}
+    </div>
+    <div>
+      <img src={image} alt={imageMeta.alt} title={imageMeta.title} width={imageMeta.width} height={imageMeta.height} />
+    </div>
     <article set:html={body.value} />
-    <img src={img} />
   </body>
 </html>
