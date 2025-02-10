@@ -45,9 +45,13 @@ try {
 } catch (error) {
     console.error('Error fetching or deserializing articles:', error);
 }
-let {title} = Astro.props;
+let {title, buttonURL, buttonText, bodyText} = Astro.props;
 articles.map((article: any) => (
-    title = article.title
+    title = article.title,
+    buttonURL = article.field_button.uri,
+    buttonText = article.field_button.title,
+    bodyText = article.field_body.value
+
 ))
 
 ---
@@ -83,19 +87,13 @@ articles.map((article: any) => (
       
        <div class="row">
         <div class="col-12 col-md-9">
-          {articles?.length ? articles.map((article: any) => (
-    <section>
-      <h2>{article.title}</h2>
-      <p>{article.id}</p>
-      <page set:html={article.field_body.value} /> 
-      <a href={article.field_button.uri}>{article.field_button.title}</a>
-     
-    </section>
-    // <section>{article.field_body}</section>
- )): <div><h1>No Content found</h1></div> }</div>
+  
+      <h2>{title}</h2>
+        <page set:html={bodyText} />
+        </div>  
         <div class="col-12 col-md-3 ">
-             <Button href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=e7mQz0a-AEqXAIHOT_G39igZ3LR9wIxPknMaJqlGo09URUFITUhPV1FYQUIwNUc3Tks1WExGV1MxNC4u" target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
-                Sign up for More Info
+             <Button href={buttonURL}target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
+                {buttonText}
              </Button>
         </div>
                     <!-- thumbs section -->
