@@ -1,0 +1,56 @@
+---
+
+import Image from "astro/components/Image.astro";
+import type {DrupalNode} from "../types";
+import {getPages} from "../api/json";
+
+// Get the Drupal base URL
+const CMS_BASE_URL = 'https://dev-drupal-astro-sandbox.pantheonsite.io';
+
+// Get the Drupal Base Url.
+export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
+// Get all published pages.
+export async function getStaticPaths() {
+    const pages = await getPages();
+
+    return pages.map((page: DrupalNode) => {
+     
+        return {
+            params: {
+                // Choose `path` to match the `[path]` routing value
+                path: page.path.alias.split('/')[2]
+            },
+            props: {
+                title: page.title,
+                body: page.body,
+                date: new Date(page.created).toLocaleDateString('en-EN', {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })
+            }
+        }
+    });
+}
+
+const {title, date, body} = Astro.props;
+// Function to replace relative URLs in the body content
+function replaceRelativeUrls(bodyContent: string) {
+  return bodyContent.replace(/src="\/([^"]+)"/g, `src="${CMS_BASE_URL}/$1"`);
+}
+
+const renderedBody = replaceRelativeUrls(body.value);
+---
+
+<html lang="en">
+  <head>
+    <title>{title}</title>
+  </head>
+  <body>
+    <h1>{title}</h1>
+    <time>{date}</time>
+    <page set:html={renderedBody} />
+   
+  </body>
+
+</html>

@@ -5,12 +5,16 @@ import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
 
 import type {DrupalNode} from "../../types";
 import {getArticles} from "../../api/drupal";
-
+// Get the Drupal Base Url.
+export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
 // Get all published articles.
 export async function getStaticPaths() {
     const articles = await getArticles();
 
     return articles.map((article: DrupalNode) => {
+     
+console.clear();
+ console.log(article) 
         return {
             params: {
                 // Choose `path` to match the `[path]` routing value
@@ -19,6 +23,7 @@ export async function getStaticPaths() {
             props: {
                 title: article.title,
                 body: article.body,
+                img: baseUrl ,
                 date: new Date(article.created).toLocaleDateString('en-EN', {
                     day: "numeric",
                     month: "long",
@@ -29,7 +34,8 @@ export async function getStaticPaths() {
     });
 }
 
-const {title, date, body} = Astro.props;
+const {title, date, body, img} = Astro.props;
+
 ---
 
 <html lang="en">
@@ -40,5 +46,6 @@ const {title, date, body} = Astro.props;
     <h1>{title}</h1>
     <time>{date}</time>
     <article set:html={body.value} />
+    <img src={img} />
   </body>
 </html>

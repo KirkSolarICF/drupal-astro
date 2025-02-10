@@ -1,0 +1,57 @@
+---
+import { Jsona } from "jsona";
+import { DrupalJsonApiParams } from "drupal-jsonapi-params";
+import type { TJsonApiBody } from "jsona/lib/JsonaTypes";
+
+// Get the Drupal base URL
+export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
+
+// Generate the JSON:API Query. Get all title and body from published articles.
+const params: DrupalJsonApiParams = new DrupalJsonApiParams();
+params.addFields("node--test_page", [
+        "title",
+        "field_body",
+        "field_button",
+        "field_image"
+
+    ])
+    .addFilter("status", "1");
+// Generates the query string.
+const path: string = params.getQueryString();
+const url: string = baseUrl + '/jsonapi/node/test_page/1d3fef57-dce7-499f-8c01-82eb64efbd3c?' + path;
+
+let articles = [];
+
+try {
+    // Get the articles
+    const request: Response = await fetch(url);
+    if (!request.ok) {
+        throw new Error(`HTTP error! status: ${request.status}`);
+    }
+    const json: string | TJsonApiBody = await request.json();
+    console.log('JSON response:', json);
+
+    // Initiate Jsona.
+    const dataFormatter: Jsona = new Jsona();
+    // Deserialize the response.
+    const deserializedData = dataFormatter.deserialize(json);
+
+    articles = Array.isArray(deserializedData) ? deserializedData : [deserializedData];
+
+    console.log('Deserialized articles:', articles);
+} catch (error) {
+    console.error('Error fetching or deserializing articles:', error);
+}
+---
+<body>
+ {articles?.length ? articles.map((article: any) => (
+    <section>
+      <h2>{article.title}</h2>
+      <p>{article.id}</p>
+      <page set:html={article.field_body.value} /> 
+      <a href={article.field_button.uri}>{article.field_button.title}</a>
+      <p>{article.field_image}</p>
+    </section>
+    // <section>{article.field_body}</section>
+ )): <div><h1>No Content found</h1></div> }
+</body>

@@ -15,5 +15,8 @@
     "astro": "^5.1.6",
     "drupal-jsonapi-params": "^2.3.2",
     "jsona": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.12.0"
   }
 }
