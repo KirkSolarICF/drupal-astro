@@ -2,6 +2,9 @@
 import { Jsona } from "jsona";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import type { TJsonApiBody } from "jsona/lib/JsonaTypes";
+import Layout from '../layouts/Layout.astro';
+import SubHero from '../components/Heros/SubHero.astro';
+import Button from '../components/Button.astro';
 
 // Get the Drupal base URL
 export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
@@ -42,16 +45,185 @@ try {
 } catch (error) {
     console.error('Error fetching or deserializing articles:', error);
 }
+let {title} = Astro.props;
+articles.map((article: any) => (
+    title = article.title
+))
+
 ---
-<body>
- {articles?.length ? articles.map((article: any) => (
+
+<Layout title={title}>
+	<!-- Hero -->
+	<Fragment slot="after-hero-content">
+		<SubHero crumb="Why Electric">
+            <Fragment slot="h1">
+                <h1><span>An All-electric </span> future</h1>
+            </Fragment>
+            <Fragment slot="svg">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" class="hero-mask">
+                <mask id="m2" style="mask-type : alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="386" height="434">
+                    <g class="mask-group" data-svg-origin="0 0" transform="matrix(1,0,0,1,0,0)" style="">
+                    <path d="M80.5355 145.811L0 223.236V177.407L56.725 122.897L80.5355 145.811Z" fill="white"></path>
+                    <path d="M200 178.993V224.782L56.5602 86.741L0 141.172V95.423L56.5602 40.9917L99.1555 81.9837L122.966 104.898L200 178.993Z" fill="#C5DC69"></path>
+                    <path d="M199.958 96.9694V142.719L75.3857 22.835L99.1962 0L199.958 96.9694Z" fill="white"></path>
+                    </g>
+                </mask>
+                 <image width="100%" height="100%" mask="url(#m2)" href="images/hero-mask-why.webp"></image>
+                </svg>
+            </Fragment>                                                                                               
+
+        </SubHero>
+	</Fragment>
+	
+
+	<Fragment slot="after-content-section">
+	    <!-- Content Sections -->
+<section class="mb-4 mt-5" id="mainContent">
+    <div class="container">
+      
+       <div class="row">
+        <div class="col-12 col-md-9">
+          {articles?.length ? articles.map((article: any) => (
     <section>
       <h2>{article.title}</h2>
       <p>{article.id}</p>
       <page set:html={article.field_body.value} /> 
       <a href={article.field_button.uri}>{article.field_button.title}</a>
-      <p>{article.field_image}</p>
+     
     </section>
     // <section>{article.field_body}</section>
- )): <div><h1>No Content found</h1></div> }
-</body>
+ )): <div><h1>No Content found</h1></div> }</div>
+        <div class="col-12 col-md-3 ">
+             <Button href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=e7mQz0a-AEqXAIHOT_G39igZ3LR9wIxPknMaJqlGo09URUFITUhPV1FYQUIwNUc3Tks1WExGV1MxNC4u" target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
+                Sign up for More Info
+             </Button>
+        </div>
+                    <!-- thumbs section -->
+        <div class="thumb-section mt-4 mb-4 justify-content-start">
+            <div class="item secondary">
+                <div class="icon-section">
+                    <i class="affordability"></i>
+                </div>
+                <div class="text-section">
+                    <p>Long-term affordability </p>
+                </div>
+            </div>
+            <div class="item accent"><div class="icon-section">
+                    <i class="efficiency"></i>
+                </div>
+                <div class="text-section">
+                    <p>High efficiency</p>
+                </div></div>
+            <div class="item secondary"><div class="icon-section">
+                    <i class="bank-reverse"></i>
+                </div>
+                <div class="text-section">
+                    <p>Low maintenance costs</p>
+                </div></div>
+            <div class="item accent"><div class="icon-section">
+                    <i class="air"></i>
+                </div>
+                <div class="text-section">
+                    <p>Cleaner air for your home</p>
+                </div></div>
+            <div class="item secondary"><div class="icon-section">
+                    <i class="protection"></i>
+                </div>
+                <div class="text-section">
+                    <p>Less pollutants </p>
+                </div></div>
+          
+        </div>
+        <!-- end thumbs section -->
+        
+       </div>
+
+
+
+    </div>
+</section>
+
+<section>
+    <div class="container">
+            <div  class="text-decoration-none card-link">
+        <div class="subcards">
+        <div class="card bg-light-accent">
+       <div class="content-wrapper">
+            <div class="left-side">
+                <div class="title">
+                   WHY AFTER A NATURAL DISASTER?
+                </div>
+                <div class="big-writing">
+                    Help when you <strong>need it <span>most</span></strong>
+                </div>
+                <a href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=e7mQz0a-AEqXAIHOT_G39igZ3LR9wIxPknMaJqlGo09URUFITUhPV1FYQUIwNUc3Tks1WExGV1MxNC4u" target="_blank" aria-label="Link opens in a new window"  class="arrow-section">
+                Sign Up for More Info <span></span>
+                </a>
+               
+            </div>
+            <div class="right-side">
+                <p>California has been rocked by natural disasters in recent years. With the effects of climate change, we will continue to see wildfires, floods, and mudslides — but we pledge to rebuild smarter and better than before. </p>
+                <p>The RISE Homes project was created to help our communities become more energy efficient after disaster strikes. This unique program not only provides a helping hand to Californians as they rebuild their lives, but also incentivizes forward thinking that will help stave off the effects of climate change for the next generation. </p>
+
+                <a href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=e7mQz0a-AEqXAIHOT_G39igZ3LR9wIxPknMaJqlGo09URUFITUhPV1FYQUIwNUc3Tks1WExGV1MxNC4u" target="_blank" aria-label="Link opens in a new window"  class="arrow-section mobile">
+                Sign Up for More Info <span></span>
+                </a>
+            </div>
+        </div>
+      </div>
+      </div>
+      </a>
+      <!-- end subcards -->
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="container">
+      
+      
+        <h3 class="special">The benefits of an <strong>all-electric home</strong></h3>
+
+        <!-- thumbs section -->
+        <div class="thumb-section mt-4 mb-4 justify-content-lg-start justify-content-sm-center d-flex align-items-stretch">
+            <div class="item secondary wide-item h-100">
+                <div class="icon-section">
+                    <i class="bank-reverse"></i>
+                </div>
+                <div class="text-section">
+                    <h4 class="text-center mt-2 mb-2">Financial</h4>
+                   <ul>
+                    <li>Electric appliances are designed to use less energy, and you can save money on your energy bill</li>
+                    <li>All-electric homes can cost less to build than mixed-fuel homes</li>
+                   </ul>
+                </div>
+            </div>
+            <div class="item sky wide-item h-100"><div class="icon-section">
+                    <i class="flower-reverse"></i>
+                </div>
+                <div class="text-section">
+                     <h4 class="text-center mt-2 mb-2">Environmental</h4>
+                   <ul>
+                    <li>All-electric homes reduce greenhouse gas emissions and help the environment</li>
+                    <li>Electric appliances reduce indoor air pollution from burning fossil fuels</li>
+                   </ul>
+                </div></div>
+            <div class="item accent wide-item h-100"><div class="icon-section">
+                    <i class="shield-reverse"></i>
+                </div>
+                <div class="text-section">
+                       <h4 class="text-center mt-2 mb-2">Health</h4>
+                   <ul>
+                    <li>Electric appliances are safer than gas appliances, which emit pollutants that can cause respiratory and cardiovascular illnesses</li>
+                    <li>Electrification reduces the demand for fossil fuel energy sources like natural gas, heating oil, and propane, which is good for the planet and good for your health</li>
+                   </ul>
+                </div></div>
+         
+           
+        </div>
+        <!-- end thumbs section -->
+
+    </div>
+</section>
+	</Fragment>
+		
+</Layout>

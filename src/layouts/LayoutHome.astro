@@ -21,17 +21,20 @@ const {title = 'Rise Homes'} = Astro.props;
 <Menu />
 <!-- Full-width Panel -->
 <FundingPanel />
-
-<section class="bg-primary overflow-hidden">
-    <div class="container">
-        <div class="hero">
-           <slot name="after-hero-content"></slot>
-        </div>
-        <!-- end hero -->
-    </div>
-</section>
-
-<slot name="after-content-section"></slot>
+<div class="color-wrapper">
+<div class="hero-container container" >
+  <div class="hero-content">
+	<slot name="after-hero-content" />
+ <div class="content-container">
+	 <slot name="after-content-container" /> 
+  </div>
+<!-- end container headline -->
+</div>
+<!-- end hero-content -->
+</div>
+</div>
+ <!-- Content Sections -->
+  <slot name="after-content-section" />
     <Footer />
 <ButtonFinance />
     <!-- GSAP and Bootstrap Scripts -->
@@ -39,11 +42,10 @@ const {title = 'Rise Homes'} = Astro.props;
     <!-- Your GSAP animations -->
     <script is:inline src="js/gsap.min.js"></script>
     <script is:inline src="js/ScrollTrigger.min.js"></script>
-    <!-- <script is:inline src="js/animations.js"></script> -->
+    <script is:inline src="js/animations.js"></script>
     <script is:inline src="js/script.js"></script> 
-    <!-- <script is:inline src="js/home.js"></script>  -->
-    <script is:inline src="js/performance.js"></script>
-    <slot name="extra-scripts"></slot> 
+    <script is:inline src="js/home.js"></script> 
+    <script is:inline src="js/performance.js"></script> 
 <!-- End Google Tag Manager -->
 </body>
 </html>

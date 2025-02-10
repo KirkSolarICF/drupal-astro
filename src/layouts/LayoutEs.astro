@@ -1,10 +1,10 @@
 ---
-import Head from '../components/Head.astro';
-import Header from '../components/Header.astro';
-import Menu from '../components/Menu.astro';
-import FundingPanel from '../components/FundingPanel.astro';
-import ButtonFinance from '../components/ButtonFinance.astro';
-import Footer from '../components/Footer.astro';
+import Head from '../components/Es/Head.astro';
+import Header from '../components/Es/Header.astro';
+import Menu from '../components/Es/Menu.astro';
+import FundingPanel from '../components/Es/FundingPanel.astro';
+import ButtonFinance from '../components/Es/ButtonFinance.astro';
+import Footer from '../components/Es/Footer.astro';
 const {title = 'Rise Homes'} = Astro.props;
 
 ---
@@ -42,7 +42,7 @@ const {title = 'Rise Homes'} = Astro.props;
     <!-- <script is:inline src="js/animations.js"></script> -->
     <script is:inline src="js/script.js"></script> 
     <!-- <script is:inline src="js/home.js"></script>  -->
-    <script is:inline src="js/performance.js"></script>
+    <script is:inline src="js/performance-es.js"></script>
     <slot name="extra-scripts"></slot> 
 <!-- End Google Tag Manager -->
 </body>

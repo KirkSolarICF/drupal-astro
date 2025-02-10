@@ -1,0 +1,21 @@
+{
+    "program": [
+        {
+            "amountReserved": "$21,800,000",
+            "amountDispersed": "$0",
+            "amountPendingApporoval": "$0",
+            "amountRemaining": "$0"
+        }
+    ],
+    "participation": [
+        {
+            "numberofReconstructedResidences": "0",
+            "numberofApplicationsReceivedandApproved": "0",
+            "numberofResidencesonDisasterReliefWaitlist": "0",
+            "numberofEquityIncentiveApplications": "0",
+            "numberofApprovedEquityIncentiveApplications": "0",
+            "numberofAboveCodeEmissionReductionApplications": "0",
+            "numberofApprovedAboveCodeEmissionReductionApplications": "0"
+        }
+    ]
+}

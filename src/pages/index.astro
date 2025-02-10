@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import LayoutHome from '../layouts/LayoutHome.astro';
+import HomeHero from '../components/Heros/HomeHero.astro';
+import VideoBox from '../components/VideoBox.astro';
+import Cards from '../components/Cards.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<LayoutHome title="Rise Homes: Home Page is Working">
+	<!-- Hero -->
+	<Fragment slot="after-hero-content">
+		<HomeHero />
+	</Fragment>
+	<!-- Video Box -->
+	<Fragment slot="after-content-container">
+		<VideoBox />
+	</Fragment>
+
+	<Fragment slot="after-content-section">
+	<!-- Cards -->
+		<Cards />
+	</Fragment>
+		
+</LayoutHome>
