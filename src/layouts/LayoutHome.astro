@@ -1,5 +1,6 @@
 ---
 import Head from '../components/Head.astro';
+import BaseHead from './BaseHead.astro';
 import Header from '../components/Header.astro';
 import Menu from '../components/Menu.astro';
 import FundingPanel from '../components/FundingPanel.astro';
@@ -10,8 +11,8 @@ const {title = 'Rise Homes'} = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
-<Head title={title}>
-</Head>
+<BaseHead title={title}>
+</BaseHead>
 <body id="languageCheck" class="">
     <div class="shield"></div>
 <!-- Google Tag Manager (noscript) -->
