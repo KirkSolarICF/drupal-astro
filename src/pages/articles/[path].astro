@@ -4,12 +4,10 @@ import {DrupalJsonApiParams} from "drupal-jsonapi-params";
 import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
 
 import type {DrupalNode} from "../../types";
-import {getArticles} from "../../api/drupal";
+import {baseUrl, getArticles} from "../../api/drupal";
 
 import { Debug } from 'astro:components'; // DELETEME
 
-// Get the Drupal Base Url.
-export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
 // Get all published articles.
 export async function getStaticPaths() {
     const articles = await getArticles();
@@ -28,7 +26,6 @@ console.clear();
                 image: baseUrl + article.field_media_image.field_media_image.uri.url,
                 imageMeta: article.field_media_image.field_media_image.resourceIdObjMeta,
                 body: article.body,
-                img: baseUrl ,
                 date: new Date(article.created).toLocaleDateString('en-EN', {
                     day: "numeric",
                     month: "long",
@@ -55,9 +52,7 @@ const {title, image, imageMeta, date, body} = Astro.props;
     <br>
     IMAGE ALT -->{imageMeta.alt}
     </div>
-    <div>
-      <img src={image} alt={imageMeta.alt} title={imageMeta.title} width={imageMeta.width} height={imageMeta.height} />
-    </div>
+    <div><img src={image} alt={imageMeta.alt} title={imageMeta.title} width={imageMeta.width} height={imageMeta.height} /></div>
     <article set:html={body.value} />
   </body>
 </html>

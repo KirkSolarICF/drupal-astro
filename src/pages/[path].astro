@@ -1,45 +1,41 @@
 ---
 
-import Image from "astro/components/Image.astro";
 import type {DrupalNode} from "../types";
-import {getPages} from "../api/json";
+import {baseUrl, getFlexContent} from "../api/json";
+import {Debug} from "astro:components";
+import Image from "astro/components/Image.astro";
 
-// Get the Drupal base URL
-const CMS_BASE_URL = 'https://dev-drupal-astro-sandbox.pantheonsite.io';
 
-// Get the Drupal Base Url.
-export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
 // Get all published pages.
 export async function getStaticPaths() {
-    const pages = await getPages();
+  const pages = await getFlexContent();
 
-    return pages.map((page: DrupalNode) => {
-     
-        return {
-            params: {
-                // Choose `path` to match the `[path]` routing value
-                path: page.path.alias.split('/')[2]
-            },
-            props: {
-                title: page.title,
-                body: page.body,
-                date: new Date(page.created).toLocaleDateString('en-EN', {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                })
-            }
-        }
-    });
+  return pages.map((page: DrupalNode) => {
+
+    return {
+      params: {
+        // Choose `path` to match the `[path]` routing value
+        path: page.path.alias.split('/')[2]
+      },
+      props: {
+        title: page.title,
+        fieldHero: page.field_hero,
+        heroImage: baseUrl + page.field_hero.field_image.field_media_image.uri.url,
+        heroImageMeta: page.field_hero.field_image.field_media_image.resourceIdObjMeta,
+        fieldMainContent: page.field_main_content,
+      }
+    }
+  });
 }
 
-const {title, date, body} = Astro.props;
-// Function to replace relative URLs in the body content
-function replaceRelativeUrls(bodyContent: string) {
-  return bodyContent.replace(/src="\/([^"]+)"/g, `src="${CMS_BASE_URL}/$1"`);
-}
+const {
+  title,
+  fieldHero,
+  heroImage,
+  heroImageMeta,
+  fieldMainContent,
+} = Astro.props;
 
-const renderedBody = replaceRelativeUrls(body.value);
 ---
 
 <html lang="en">
@@ -48,9 +44,64 @@ const renderedBody = replaceRelativeUrls(body.value);
   </head>
   <body>
     <h1>{title}</h1>
-    <time>{date}</time>
-    <page set:html={renderedBody} />
-   
-  </body>
 
+    <!-- HERO -->
+    <!--<Debug hero={fieldHero.field_image} />-->
+    <pre>{fieldHero.field_crumb}</pre>
+    <h4 set:html={fieldHero.field_heading} />
+    <Image src={heroImage} title={heroImageMeta.title} alt={heroImageMeta.alt} width={heroImageMeta.width} height={heroImageMeta.height} />
+
+    <!-- MAIN CONTENT (flex content) -->
+    <!--<Debug main_content={fieldMainContent} />-->
+    {fieldMainContent.map(function (content: any) {
+
+      // return (
+      //   <Debug content_all={content} />
+      // );
+
+      <!--<Debug main_content={content.field_wrapped_content} />-->
+      <!-- if paragraph type is section wrapper, render the data -->
+      if (content.type === 'paragraph--section_wrapper')
+        return (
+          <div>
+            {content.field_wrapped_content.map(function (item: any) {
+              return (
+                <div style="background: lightgray; margin: 20px; padding: 30px;">
+                  <!--<Debug item={item} />-->
+                  <p set:html={item.field_formatted_text}></p>
+                </div>
+              );
+            })}
+          </div>
+        );
+
+      <!-- if paragraph type is section wrapper, render the data -->
+      if (content.type === 'paragraph--thumb_cards')
+        return (
+          <div>
+
+            {content.field_thumb_card.map(function (item: any) {
+              return (
+                <div style="background: darkgray; margin: 20px; padding: 30px;">
+                  <!--<Debug item={item} />-->
+                  <p>[Background color = {item.field_background_color}]</p>
+                  <img src={baseUrl + item.field_image.field_media_svg.uri.url} alt="" />
+                  <h4 set:html={item.field_heading}></h4>
+                  <p set:html={item.field_formatted_text.value}></p>
+                  <!--<Debug item={item.field_button} />-->
+                  {
+                    item.field_button ? (
+                      <a href={item.field_button.url}>{item.field_button.title}</a>
+                    ) : null
+                  }
+                </div>
+              );
+            })}
+          </div>
+        );
+
+
+    })}
+
+  </body>
 </html>
