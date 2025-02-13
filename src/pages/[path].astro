@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     return {
       params: {
         // Choose `path` to match the `[path]` routing value
-        path: page.path.alias.split('/')[2]
+        path: page.path.alias.split('/').pop()
       },
       props: {
         title: page.title,
@@ -79,7 +79,6 @@ const {
       if (content.type === 'paragraph--thumb_cards')
         return (
           <div>
-
             {content.field_thumb_card.map(function (item: any) {
               return (
                 <div style="background: darkgray; margin: 20px; padding: 30px;">

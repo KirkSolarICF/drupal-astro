@@ -68,7 +68,7 @@ export const getFlexContent = async (): Promise<DrupalNode[]> => {
           'field_hero',
           'field_hero.field_image.field_media_image',
           'field_main_content.field_wrapped_content',
-          'field_main_content.field_thumb_card',
+          // 'field_main_content.field_thumb_card', // seems we dont need this include.
           'field_main_content.field_thumb_card.field_image.field_media_svg'
         ])
         .addFields('media--image', ['field_media_image'])
@@ -77,6 +77,7 @@ export const getFlexContent = async (): Promise<DrupalNode[]> => {
         .addFilter("status", "1");
     // convert the params into a query string
     const path: string = params.getQueryString();
+    // console.log(baseUrl + '/jsonapi/node/flex_content?' + path);
     // append the params to build the database fetch, export the result to the article page template
     return await fetchUrl(baseUrl + '/jsonapi/node/flex_content?' + path);
 }
