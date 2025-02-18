@@ -11,6 +11,18 @@ export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
 
 // Generate the JSON:API Query. Get all title and body from published articles.
 const params: DrupalJsonApiParams = new DrupalJsonApiParams();
+//   params
+//         .addFields('node--page',  [
+//             "title",
+//             "path",
+//             "field_media_image",
+//             "body",
+//             "created",
+//         ])
+//         .addInclude(['field_media_image.field_media_image'])
+//         .addFields('media--image', ['field_media_image'])
+//         .addFields('file--file', ['uri', 'image_style_uri', 'resourceIdObjMedia'])
+//         .addFilter("status", "1");
 params.addFields("node--test_page", [
         "title",
         "field_body",
@@ -21,7 +33,7 @@ params.addFields("node--test_page", [
     .addFilter("status", "1");
 // Generates the query string.
 const path: string = params.getQueryString();
-const url: string = baseUrl + '/jsonapi/node/test_page/1d3fef57-dce7-499f-8c01-82eb64efbd3c?' + path;
+const url: string = baseUrl + '/jsonapi/node/test_page/?' + path;
 
 let articles = [];
 
