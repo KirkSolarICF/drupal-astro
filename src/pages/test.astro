@@ -1,4 +1,5 @@
 ---
+// import type {DrupalNode} from "../types";
 import { Jsona } from "jsona";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import type { TJsonApiBody } from "jsona/lib/JsonaTypes";
@@ -23,12 +24,19 @@ const params: DrupalJsonApiParams = new DrupalJsonApiParams();
 //         .addFields('media--image', ['field_media_image'])
 //         .addFields('file--file', ['uri', 'image_style_uri', 'resourceIdObjMedia'])
 //         .addFilter("status", "1");
-params.addFields("node--test_page", [
+params.addFields("node--page", [
         "title",
         "field_body",
         "field_button",
         "field_image"
 
+    ])
+    .addFields('media--image', ['field_media_image'])
+    // .addInclude(['field_media_image.field_media_image'])
+    .addFields("file--file", [
+        "uri",
+        "image_style_uri",
+        "resourceIdObjMedia"
     ])
     .addFilter("status", "1");
 // Generates the query string.
@@ -57,12 +65,13 @@ try {
 } catch (error) {
     console.error('Error fetching or deserializing articles:', error);
 }
-let {title, buttonURL, buttonText, bodyText} = Astro.props;
+let {title, buttonURL, buttonText, bodyText, field_image} = Astro.props;
 articles.map((article: any) => (
     title = article.title,
     buttonURL = article.field_button.uri,
     buttonText = article.field_button.title,
-    bodyText = article.field_body.value
+    bodyText = article.field_body.value,
+    field_image = baseUrl + article.field_image.type 
 
 ))
 
@@ -99,8 +108,10 @@ articles.map((article: any) => (
       
        <div class="row">
         <div class="col-12 col-md-9">
+            
   
       <h2>{title}</h2>
+      <p>Field Image Path: {field_image} </p>
         <page set:html={bodyText} />
         </div>  
         <div class="col-12 col-md-3 ">
