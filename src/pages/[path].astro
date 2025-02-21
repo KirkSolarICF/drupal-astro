@@ -4,7 +4,9 @@ import type {DrupalNode} from "../types";
 import {baseUrl, getFlexContent} from "../api/json";
 import {Debug} from "astro:components";
 import Image from "astro/components/Image.astro";
-
+import Layout from '../layouts/Layout.astro';
+import SubHero from '../components/Heros/SubHero.astro';
+import Button from '../components/Button.astro';
 
 // Get all published pages.
 export async function getStaticPaths() {
@@ -37,15 +39,37 @@ const {
 } = Astro.props;
 
 ---
+<Layout title={title}>
+ 	<Fragment slot="after-hero-content">
+		<SubHero crumb={title ? title : null}>
+            <Fragment slot="h1">
+                <h1><span>An All-electric </span> future</h1>
+            </Fragment>
+            {heroImage && heroImageMeta ? (
+            <Fragment slot="svg">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" class="hero-mask">
+                <mask id="m2" style="mask-type : alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="386" height="434">
+                    <g class="mask-group" data-svg-origin="0 0" transform="matrix(1,0,0,1,0,0)" style="">
+                    <path d="M80.5355 145.811L0 223.236V177.407L56.725 122.897L80.5355 145.811Z" fill="white"></path>
+                    <path d="M200 178.993V224.782L56.5602 86.741L0 141.172V95.423L56.5602 40.9917L99.1555 81.9837L122.966 104.898L200 178.993Z" fill="#C5DC69"></path>
+                    <path d="M199.958 96.9694V142.719L75.3857 22.835L99.1962 0L199.958 96.9694Z" fill="white"></path>
+                    </g>
+                </mask>
+                 <image width="100%" height="100%" mask="url(#m2)" href={heroImage}></image>
+                </svg>
+            </Fragment>      
+            ): null}                                                                                         
 
-<html lang="en">
-  <head>
-    <title>
+        </SubHero>
+	</Fragment>
+<!-- <html lang="en"> -->
+  <!-- <head> -->
+    <!-- <title>
       { title ? title : null }
-    </title>
-  </head>
-  <body>
-    <h1>{title ? title : null}</h1>
+    </title> -->
+  <!-- </head> -->
+  <!-- <body> -->
+    <!-- <h1>{title ? title : null}</h1> -->
 
     <!-- HERO -->
     <!--<Debug hero={fieldHero} />-->
@@ -66,6 +90,7 @@ const {
     }
     <!-- MAIN CONTENT (flex content) -->
     <!--<Debug main_content={fieldMainContent} />-->
+    <Fragment slot="after-content-section">
     {fieldMainContent.map(function (content: any) {
 
       // return (
@@ -76,37 +101,47 @@ const {
       <!-- if paragraph type is section wrapper, render the data -->
       if (content.type === 'paragraph--section_wrapper')
         return (
-          <div>
+        <section>
+          <div class="container">
+            <div class="row">
             {
               content.field_wrapped_content ? (
                 content.field_wrapped_content.map(function (item: any) {
                   return (
-                    <div style="background: lightgray; margin: 20px; padding: 30px;">
-                      <!--<Debug item={item} />-->
+                    <div >
                       <p set:html={item.field_formatted_text}></p>
                     </div>
                   );
                 })
               ) : null
             }
-          </div>
+            </div> <!-- end row -->
+          </div><! -- end container -->
+          </section>
         );
 
       <!-- if paragraph type is section wrapper, render the data -->
+     
       if (content.type === 'paragraph--thumb_cards')
         return (
-          <div>
+       <section>
+      <div class="container">
+          <div class="thumb-section mt-4 mb-4 justify-content-lg-start justify-content-sm-center d-flex align-items-stretch">
             {
               content.field_thumb_card.length > 0 ? (
-                content.field_thumb_card.map(function (item: any) {
+                content.field_thumb_card.map(function (item: any, index:number) {
+                  let itemClass = 'large-green';
+                    if (index === 1) itemClass = 'large-teal';
+                    else if (index === 2) itemClass = 'large-purple';
+                    else if (index === 3) itemClass = 'large-sky';
                   return (
-                    <div style="background: darkgray; margin: 20px; padding: 30px;">
+                    <div class={`item ${itemClass} large-item h-100`}>
                       <!--<Debug item={item} />-->
                       {
-                        item.field_background_color ? (
-                          <p>[Background color = {item.field_background_color}]</p>
-                        ) : null
-                      }
+                        // item.field_background_color ? (
+                        //   <p>[Background color = {item.field_background_color}]</p>
+                        // ) : null
+                      } 
                       {
                         item.field_image ? (
                           <img src={ baseUrl + item.field_image.field_media_svg.uri.url } alt="" />
@@ -124,8 +159,11 @@ const {
                       }
                       <!--<Debug item={item.field_button} />-->
                       {
+                         
                         item.field_button ? (
-                          <a href={item.field_button.url}>{item.field_button.title}</a>
+                          <Button href={item.field_button.url}target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
+                            {item.field_button.title}
+                        </Button>
                         ) : null
                       }
                     </div>
@@ -134,10 +172,14 @@ const {
               ) : null
             }
           </div>
+          </div>
+          </section>
         );
-
+          
 
     })}
+    </Fragment>
 
-  </body>
-</html>
+  <!-- </body> -->
+<!-- </html> -->
+</Layout>
