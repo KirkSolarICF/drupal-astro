@@ -1,0 +1,20 @@
+---
+const {content} = Astro.props
+---
+<section>
+          <div class="container">
+            <div class="row">
+            {
+              content.field_wrapped_content ? (
+                content.field_wrapped_content.map(function (item: any) {
+                  return (
+                    <div >
+                      <p set:html={item.field_formatted_text}></p>
+                    </div>
+                  );
+                })
+              ) : null
+            }
+            </div> <!-- end row -->
+          </div><! -- end container -->
+</section>

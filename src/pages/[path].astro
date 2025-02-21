@@ -6,7 +6,9 @@ import {Debug} from "astro:components";
 import Image from "astro/components/Image.astro";
 import Layout from '../layouts/Layout.astro';
 import SubHero from '../components/Heros/SubHero.astro';
-import Button from '../components/Button.astro';
+// import Button from '../components/Button.astro';
+import ParaButton from '../components/ParaButton.astro';
+import ThumbCards from "../components/ThumbCards.astro";
 
 // Get all published pages.
 export async function getStaticPaths() {
@@ -101,79 +103,81 @@ const {
       <!-- if paragraph type is section wrapper, render the data -->
       if (content.type === 'paragraph--section_wrapper')
         return (
-        <section>
-          <div class="container">
-            <div class="row">
-            {
-              content.field_wrapped_content ? (
-                content.field_wrapped_content.map(function (item: any) {
-                  return (
-                    <div >
-                      <p set:html={item.field_formatted_text}></p>
-                    </div>
-                  );
-                })
-              ) : null
-            }
-            </div> <!-- end row -->
-          </div><! -- end container -->
-          </section>
-        );
+        // <section>
+        //   <div class="container">
+        //     <div class="row">
+        //     {
+        //       content.field_wrapped_content ? (
+        //         content.field_wrapped_content.map(function (item: any) {
+        //           return (
+        //             <div >
+        //               <p set:html={item.field_formatted_text}></p>
+        //             </div>
+        //           );
+        //         })
+        //       ) : null
+        //     }
+        //     </div> <!-- end row -->
+        //   </div><! -- end container -->
+        //   </section>
+        <ParaButton content={content} />  
+      );
 
       <!-- if paragraph type is section wrapper, render the data -->
      
       if (content.type === 'paragraph--thumb_cards')
         return (
-       <section>
-      <div class="container">
-          <div class="thumb-section mt-4 mb-4 justify-content-lg-start justify-content-sm-center d-flex align-items-stretch">
-            {
-              content.field_thumb_card.length > 0 ? (
-                content.field_thumb_card.map(function (item: any, index:number) {
-                  let itemClass = 'large-green';
-                    if (index === 1) itemClass = 'large-teal';
-                    else if (index === 2) itemClass = 'large-purple';
-                    else if (index === 3) itemClass = 'large-sky';
-                  return (
-                    <div class={`item ${itemClass} large-item h-100`}>
-                      <!--<Debug item={item} />-->
-                      {
-                        // item.field_background_color ? (
-                        //   <p>[Background color = {item.field_background_color}]</p>
-                        // ) : null
-                      } 
-                      {
-                        item.field_image ? (
-                          <img src={ baseUrl + item.field_image.field_media_svg.uri.url } alt="" />
-                        ) : null
-                      }
-                      {
-                        item.field_heading ? (
-                          <h3 set:html={item.field_heading} class="text-center mt-2 mb-2"></h3>
-                        ) : null
-                      }
-                      {
-                        item.field_formatted_text ? (
-                          <p set:html={item.field_formatted_text.value}></p>
-                        ) : null
-                      }
-                      <!--<Debug item={item.field_button} />-->
-                      {
+      <ThumbCards content={content} baseUrl={baseUrl} />
+      //  <section>
+      // <div class="container">
+      //     <div class="thumb-section mt-4 mb-4 justify-content-lg-start justify-content-sm-center d-flex align-items-stretch">
+      //       {
+      //         content.field_thumb_card.length > 0 ? (
+      //           content.field_thumb_card.map(function (item: any, index:number) {
+      //             let itemClass = 'large-green';
+      //               if (index === 1) itemClass = 'large-teal';
+      //               else if (index === 2) itemClass = 'large-purple';
+      //               else if (index === 3) itemClass = 'large-sky';
+      //             return (
+      //               <div class={`item ${itemClass} large-item h-100`}>
+      //                 <!--<Debug item={item} />-->
+      //                 {
+      //                   // item.field_background_color ? (
+      //                   //   <p>[Background color = {item.field_background_color}]</p>
+      //                   // ) : null
+      //                 } 
+      //                 {
+      //                   item.field_image ? (
+      //                     <img src={ baseUrl + item.field_image.field_media_svg.uri.url } alt="" />
+      //                   ) : null
+      //                 }
+      //                 {
+      //                   item.field_heading ? (
+      //                     <h3 set:html={item.field_heading} class="text-center mt-2 mb-2"></h3>
+      //                   ) : null
+      //                 }
+      //                 {
+      //                   item.field_formatted_text ? (
+      //                     <p set:html={item.field_formatted_text.value}></p>
+      //                   ) : null
+      //                 }
+      //                 <!--<Debug item={item.field_button} />-->
+      //                 {
                          
-                        item.field_button ? (
-                          <Button href={item.field_button.url}target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
-                            {item.field_button.title}
-                        </Button>
-                        ) : null
-                      }
-                    </div>
-                  );
-                })
-              ) : null
-            }
-          </div>
-          </div>
-          </section>
+      //                   item.field_button ? (
+      //                     <Button href={item.field_button.url}target="_blank" aria-label="Link opens in a new window"  classes="mb-2">
+      //                       {item.field_button.title}
+      //                   </Button>
+      //                   ) : null
+      //                 }
+      //               </div>
+      //             );
+      //           })
+      //         ) : null
+      //       }
+      //     </div>
+      //     </div>
+      //     </section>
         );
           
 
